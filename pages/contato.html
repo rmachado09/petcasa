@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCasa - Contacto</title>
+    
+</head>
+<body>
+
+   
+    <header>
+        <div class="logo">
+            <h1>🐾 PetCasa</h1>
+        </div>
+        <nav>
+                <a href="../index.html">Início</a>
+                <a href="animais.html">Animais</a>
+                <a href="como-adotar.html">Como Adotar</a>
+                <a href="como_ajudar.html">Como Ajudar</a>
+                <a href="sobre.html">Sobre Nós</a>
+                <a href="contato.html">Contato</a>
+        </nav>
+    </header>
+
+
+    <main>
+        <section class="contato-container">
+            <h2>Fale Conosco</h2>
+            <p>Tem dúvidas sobre o processo de adoção, quer ser voluntário ou precisa de mais informações? Envie-nos uma mensagem!</p>
+
+            <form action="#" method="POST" class="form-contato">
+                <div class="campo">
+                    <label for="nome">Nome Completo:</label>
+                    <input type="text" id="nome" name="nome" placeholder="Digite o seu nome" required>
+                </div>
+
+                <div class="campo">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" name="email" placeholder="seuemail@exemplo.com" required>
+                </div>
+
+                <div class="campo">
+                    <label for="telefone">Telefone / WhatsApp:</label>
+                    <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
+                </div>
+
+                <div class="campo">
+                    <label for="assunto">Assunto:</label>
+                    <select id="assunto" name="assunto" required>
+                        <option value="" disabled selected>Selecione um assunto</option>
+                        <option value="adocao">Interesse em Adoção</option>
+                        <option value="voluntariado">Seja Voluntário</option>
+                        <option value="doacao">Dúvidas sobre Doações</option>
+                        <option value="resgate">Informar Resgate / Denúncia</option>
+                        <option value="outro">Outros Assuntos</option>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label for="mensagem">Mensagem:</label>
+                    <textarea id="mensagem" name="mensagem" rows="5" placeholder="Escreva a sua mensagem aqui..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn">Enviar Mensagem</button>
+            </form>
+        </section>
+
+        <section class="info-contato">
+            <h3>Canais de Atendimento Direto</h3>
+                <p><strong>📱 WhatsApp:</strong> (00) 99999-9999</p>
+                <p><strong>✉️ E-mail:</strong> contato@petcasa.org</p>
+                <p><strong>⏰ Horário de Atendimento:</strong> Segunda a Sábado, das 09h às 17h</p>
+        
+
+            <div class="redes-sociais">
+                <h3>Siga a PetCasa</h3>
+                <p>Acompanhe os nossos resgates e atualizações nas redes sociais:</p>
+                <ul>
+                    <li><a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a></li>
+                    <li><a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a></li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 PetCasa - Todos os direitos reservados.</p>
+    </footer>
+
+    
+</body>
+</html>

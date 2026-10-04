@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PetCasa - Animais para Adoção</title>
+    
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <h1>🐾 PetCasa</h1>
+        </div>
+        <nav>
+                <a href="../index.html">Início</a>
+                <a href="animais.html">Animais</a>
+                <a href="como-adotar.html">Como Adotar</a>
+                <a href="sobre.html">Sobre Nós</a></li>
+                <a href="contato.html">Contacto</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="catalogo">
+            <h2>Nossos Animais para Adoção</h2>
+            <p>Filtre e encontre o companheiro ideal para a sua casa:</p>
+
+            
+            <div class="filtros">
+                <label for="filtro-especie">Espécie:</label>
+                <select id="filtro-especie">
+                    <option value="todos">Todos</option>
+                    <option value="cao">Cães</option>
+                    <option value="gato">Gatos</option>
+                </select>
+
+                <label for="filtro-porte">Porte:</label>
+                <select id="filtro-porte">
+                    <option value="todos">Todos</option>
+                    <option value="pequeno">Pequeno</option>
+                    <option value="medio">Médio</option>
+                    <option value="grande">Grande</option>
+                </select>
+            </div>
+
+            
+            <div class="grid-animais">
+                <article class="card-pet">
+                    <img src="../assets/img/thor.jpg" alt="Foto do cão Thor" width="200">
+                    <h3>Thor</h3>
+                    <p>Cão • Macho • 2 anos • Porte Médio</p>
+                    <a href="detalhes-animal.html">Ver Ficha Detalhada</a>
+                </article>
+
+                <article class="card-pet">
+                    <img src="../assets/img/mia.jpg" alt="Foto da gata Mia" width="200">
+                    <h3>Mia</h3>
+                    <p>Gata • Fêmea • 1 ano • Porte Pequeno</p>
+                    <a href="detalhes-animal.html">Ver Ficha Detalhada</a>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 PetCasa - Todos os direitos reservados.</p>
+    </footer>
+
+    
+</body>
+</html>

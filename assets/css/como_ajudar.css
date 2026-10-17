@@ -1,0 +1,198 @@
+.hero-ajuda {
+  margin-bottom: 40px;
+  padding: 48px 32px;
+  text-align: center;
+  background-color: #256445;
+  color: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(23, 64, 46, 0.2);
+}
+ 
+.hero-ajuda h2 {
+  margin: 0 0 12px;
+  color: #ffffff;
+  font-size: 2.2rem;
+}
+ 
+.hero-ajuda p {
+  max-width: 600px;
+  margin: 0 auto;
+  color: #e3f1e5;
+  font-size: 1.1rem;
+}
+ 
+/* ---------- Formas de ajudar (cards) ---------- */
+.formas-ajuda {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-bottom: 40px;
+}
+ 
+.formas-ajuda h2 {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #17402e;
+}
+ 
+.card-ajuda {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  background-color: #ffffff;
+  border: 2px solid #e3f1e5;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(23, 64, 46, 0.1);
+}
+ 
+.card-ajuda h3 {
+  margin: 0 0 12px;
+  color: #256445;
+  font-size: 1.25rem;
+}
+ 
+.card-ajuda p {
+  margin: 0 0 10px;
+  color: #4a5b52;
+}
+ 
+/* Itens da lista de suprimentos (a partir do 2º parágrafo) */
+.card-ajuda p:nth-of-type(n+2) {
+  padding-left: 12px;
+  border-left: 3px solid #8cc49a;
+}
+ 
+.card-ajuda a {
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 10px 20px;
+  background-color: #3f8a5c;
+  color: #ffffff;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 10px;
+}
+ 
+.card-ajuda a:hover {
+  background-color: #256445;
+}
+ 
+/* ---------- Cartões: doação e formulário ---------- */
+.dados-doacao,
+.form-voluntario {
+  margin-bottom: 40px;
+  padding: 28px;
+  background-color: #ffffff;
+  border: 2px solid #e3f1e5;
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(23, 64, 46, 0.1);
+}
+ 
+.form-voluntario {
+  margin-bottom: 0;
+}
+ 
+.dados-doacao h2,
+.form-voluntario h2 {
+  margin: 0 0 12px;
+  color: #17402e;
+}
+ 
+.dados-doacao > p,
+.form-voluntario > p {
+  margin: 0 0 20px;
+  color: #4a5b52;
+}
+ 
+/* ---------- Tabela de doação ---------- */
+.dados-doacao table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid #e3f1e5;
+  border-radius: 12px;
+  overflow: hidden;
+}
+ 
+.dados-doacao th {
+  padding: 12px 16px;
+  text-align: left;
+  background-color: #256445;
+  color: #ffffff;
+  border: none;
+}
+ 
+.dados-doacao td {
+  padding: 12px 16px;
+  border: none;
+  border-bottom: 1px solid #e3f1e5;
+}
+ 
+.dados-doacao tbody tr:last-child td {
+  border-bottom: none;
+}
+ 
+.dados-doacao tbody tr:nth-child(even) {
+  background-color: #f4faf4;
+}
+ 
+.dados-doacao td:first-child {
+  font-weight: 600;
+  color: #17402e;
+}
+ 
+/* ---------- Formulário de voluntário ---------- */
+.form-voluntario form {
+  max-width: 600px;
+}
+ 
+.form-voluntario form div {
+  margin-bottom: 18px;
+}
+ 
+.form-voluntario label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #17402e;
+}
+ 
+.form-voluntario input,
+.form-voluntario select,
+.form-voluntario textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 1rem;
+  color: #1d2b24;
+  background-color: #f4faf4;
+  border: 2px solid #8cc49a;
+  border-radius: 8px;
+}
+ 
+.form-voluntario textarea {
+  resize: vertical;
+}
+ 
+.form-voluntario input:focus,
+.form-voluntario select:focus,
+.form-voluntario textarea:focus {
+  outline: 3px solid #d6ec8f;
+  border-color: #3f8a5c;
+}
+ 
+.form-voluntario button {
+  padding: 12px 28px;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #3f8a5c;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}
+ 
+.form-voluntario button:hover {
+  background-color: #256445;
+}

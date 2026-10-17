@@ -91,3 +91,60 @@
   font-weight: 600;
   color: #17402e;
 }
+
+
+
+
+@media (max-width: 768px) {
+  .passos-adocao,
+  .requisitos {
+    padding: 22px;
+    margin-bottom: 24px;
+  }
+ 
+  .requisitos td:first-child {
+    width: 35%;
+  }
+}
+ 
+
+@media (max-width: 640px) {
+  .passos-adocao,
+  .requisitos {
+    padding: 20px 16px;
+  }
+ 
+  .requisitos table,
+  .requisitos tbody,
+  .requisitos tr,
+  .requisitos td {
+    display: block;
+    width: 100%;
+  }
+ 
+  .requisitos thead {
+    display: none;
+  }
+ 
+  .requisitos tbody tr {
+    padding: 12px 0;
+    border-bottom: 1px solid #e3f1e5;
+  }
+ 
+  .requisitos tbody tr:last-child {
+    border-bottom: none;
+  }
+ 
+  .requisitos td {
+    padding: 2px 16px;
+    border: none;
+  }
+ 
+  .requisitos tbody tr:last-child td {
+    border-bottom: none;
+  }
+ 
+  .requisitos td:first-child {
+    width: 100%;
+  }
+}

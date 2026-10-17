@@ -31,3 +31,32 @@ sobre-projeto {
   border-left: 6px solid #3f8a5c;
   border-radius: 0 12px 12px 0;
 }
+
+
+
+
+@media (max-width: 768px) {
+  .sobre-projeto {
+    padding: 24px;
+  }
+ 
+  .sobre-projeto h2 {
+    font-size: 1.8rem;
+  }
+}
+ 
+
+@media (max-width: 640px) {
+  .sobre-projeto {
+    padding: 20px 16px;
+  }
+ 
+  .sobre-projeto h2 {
+    font-size: 1.6rem;
+  }
+ 
+  .sobre-projeto h3 {
+    margin-top: 24px;
+    font-size: 1.25rem;
+  }
+}

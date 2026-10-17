@@ -25,6 +25,7 @@ a:focus {
 
 
 
+
 header {
   background-color: #17402e;
   color: #ffffff;
@@ -72,6 +73,148 @@ nav a.ativo {
   color: #17402e;
 }
 
+
+
+
+main {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 20px 48px;
+}
+ 
+main h2 {
+  margin-top: 0;
+  color: #17402e;
+}
+
+.banner-hero {
+  background-color: #256445;
+  color: #ffffff;
+  border-radius: 14px;
+  padding: 48px 32px;
+  text-align: center;
+  margin-bottom: 40px;
+  box-shadow: 0 2px 10px rgba(23, 64, 46, 0.2);
+}
+ 
+.banner-hero h2 {
+  color: #ffffff;
+  font-size: 2.2rem;
+}
+ 
+.banner-hero p {
+  max-width: 600px;
+  margin: 0 auto 28px;
+  color: #e3f1e5;
+  font-size: 1.1rem;
+}
+ 
+.banner-hero a {
+  display: inline-block;
+  margin: 6px;
+  padding: 12px 24px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+}
+ 
+.banner-hero a:first-of-type {
+  background-color: #d6ec8f;
+  color: #17402e;
+}
+ 
+.banner-hero a:first-of-type:hover {
+  background-color: #ffffff;
+}
+ 
+.banner-hero a:last-of-type {
+  border: 2px solid #8cc49a;
+  color: #ffffff;
+}
+ 
+.banner-hero a:last-of-type:hover {
+  background-color: #3f8a5c;
+  border-color: #3f8a5c;
+}
+
+.destaques {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+ 
+.destaques h2,
+.destaques > p {
+  width: 100%;
+  margin: 0;
+}
+ 
+.destaques > p {
+  color: #4a5b52;
+}
+ 
+.card-pet {
+  flex: 1 1 280px;
+  max-width: 480px;
+  background-color: #ffffff;
+  border: 1px solid #e3f1e5;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(23, 64, 46, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+ 
+.card-pet img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+}
+ 
+.card-pet h3 {
+  margin: 16px 20px 4px;
+  color: #256445;
+  font-size: 1.35rem;
+}
+ 
+.card-pet p {
+  margin: 0 20px 12px;
+  font-size: 0.95rem;
+  color: #4a5b52;
+}
+ 
+.card-pet a {
+  margin: auto 20px 20px;
+  padding: 10px 16px;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #3f8a5c;
+  border-radius: 10px;
+}
+ 
+.card-pet a:hover {
+  background-color: #256445;
+}
+
+aside {
+  background-color: #e3f1e5;
+  border-left: 6px solid #3f8a5c;
+  border-radius: 0 14px 14px 0;
+  padding: 20px 24px;
+}
+ 
+aside h3 {
+  margin: 0 0 8px;
+  color: #17402e;
+}
+ 
+aside p {
+  margin: 6px 0;
+}
 
 
 

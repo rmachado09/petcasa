@@ -219,6 +219,22 @@ aside p {
 
 
 
+footer {
+  margin-top: auto;
+  background-color: #17402e;
+  color: #8cc49a;
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9rem;
+}
+ 
+footer p {
+  margin: 0;
+}
+
+
+
+
 @media (min-width: 1400px) {
   .logo,
   nav,
@@ -374,29 +390,4 @@ aside p {
     padding: 24px 20px;
     margin-bottom: 24px;
   }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-footer {
-  margin-top: auto;
-  background-color: #17402e;
-  color: #8cc49a;
-  text-align: center;
-  padding: 20px;
-  font-size: 0.9rem;
-}
- 
-footer p {
-  margin: 0;
 }

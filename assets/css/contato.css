@@ -121,3 +121,39 @@
 .redes-sociais a:hover {
   background-color: #256445;
 }
+
+
+
+
+@media (max-width: 768px) {
+  .contato-container,
+  .info-contato {
+    padding: 22px;
+  }
+ 
+  .contato-container {
+    margin-bottom: 24px;
+  }
+}
+ 
+
+@media (max-width: 640px) {
+  .contato-container,
+  .info-contato {
+    padding: 20px 16px;
+  }
+ 
+  .btn {
+    width: 100%;
+  }
+ 
+  .redes-sociais ul {
+    flex-direction: column;
+  }
+ 
+  .redes-sociais a {
+    display: block;
+    text-align: center;
+  }
+}
+ 

@@ -21,7 +21,7 @@
   font-size: 1.1rem;
 }
  
-/* ---------- Formas de ajudar (cards) ---------- */
+
 .formas-ajuda {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -56,7 +56,7 @@
   color: #4a5b52;
 }
  
-/* Itens da lista de suprimentos (a partir do 2º parágrafo) */
+
 .card-ajuda p:nth-of-type(n+2) {
   padding-left: 12px;
   border-left: 3px solid #8cc49a;
@@ -77,7 +77,7 @@
   background-color: #256445;
 }
  
-/* ---------- Cartões: doação e formulário ---------- */
+
 .dados-doacao,
 .form-voluntario {
   margin-bottom: 40px;
@@ -104,7 +104,7 @@
   color: #4a5b52;
 }
  
-/* ---------- Tabela de doação ---------- */
+
 .dados-doacao table {
   width: 100%;
   border-collapse: separate;
@@ -141,7 +141,7 @@
   color: #17402e;
 }
  
-/* ---------- Formulário de voluntário ---------- */
+
 .form-voluntario form {
   max-width: 600px;
 }
@@ -195,4 +195,83 @@
  
 .form-voluntario button:hover {
   background-color: #256445;
+}
+
+
+
+
+@media (max-width: 768px) {
+  .hero-ajuda {
+    padding: 36px 24px;
+    margin-bottom: 32px;
+  }
+ 
+  .hero-ajuda h2 {
+    font-size: 1.8rem;
+  }
+ 
+  .formas-ajuda,
+  .dados-doacao {
+    margin-bottom: 32px;
+  }
+ 
+  .dados-doacao,
+  .form-voluntario {
+    padding: 22px;
+  }
+}
+ 
+
+@media (max-width: 640px) {
+  .hero-ajuda {
+    padding: 28px 20px;
+  }
+ 
+  .hero-ajuda h2 {
+    font-size: 1.6rem;
+  }
+ 
+  .formas-ajuda {
+    grid-template-columns: 1fr;
+  }
+ 
+  .dados-doacao,
+  .form-voluntario {
+    padding: 20px 16px;
+  }
+ 
+  
+  .dados-doacao table,
+  .dados-doacao tbody,
+  .dados-doacao tr,
+  .dados-doacao td {
+    display: block;
+    width: 100%;
+  }
+ 
+  .dados-doacao thead {
+    display: none;
+  }
+ 
+  .dados-doacao tbody tr {
+    padding: 12px 0;
+    border-bottom: 1px solid #e3f1e5;
+  }
+ 
+  .dados-doacao tbody tr:last-child {
+    border-bottom: none;
+  }
+ 
+  .dados-doacao td {
+    padding: 2px 16px;
+    border: none;
+  }
+ 
+  .dados-doacao tbody tr:last-child td {
+    border-bottom: none;
+  }
+ 
+  .form-voluntario button {
+    width: 100%;
+  }
 }

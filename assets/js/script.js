@@ -16,3 +16,15 @@ document.addEventListener("DOMContentLoaded", () => {
   configurarLembrete();
   atualizarAnoRodape();
 });
+
+function lerAnimais() {
+  try {
+    const bruto = localStorage.getItem(CHAVE_ANIMAIS);
+    if (bruto === null) return null;
+    const dados = JSON.parse(bruto);
+    return Array.isArray(dados) ? dados : null;
+  } catch (erro) {
+    console.error("Não foi possível ler os animais salvos:", erro);
+    return null;
+  }
+}

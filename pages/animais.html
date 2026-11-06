@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../assets/css/style.css">
     <link rel="stylesheet" href="../assets/css/animais.css">
     <script src="../assets/js/animais.js" defer></script>
-    
+
 </head>
 <body>
 
@@ -31,7 +31,13 @@
             <p>Filtre e encontre o companheiro ideal para a sua casa:</p>
 
             
+            <button type="button" id="btn-novo" class="btn btn-primario btn-novo">+ Novo animal</button>
+
+
             <div class="filtros">
+                <label for="busca">Pesquisar:</label>
+                <input type="search" id="busca" placeholder="Nome ou raça" autocomplete="off">
+
                 <label for="filtro-especie">Espécie:</label>
                 <select id="filtro-especie">
                     <option value="todos">Todos</option>
@@ -46,31 +52,123 @@
                     <option value="medio">Médio</option>
                     <option value="grande">Grande</option>
                 </select>
+
+               
+                <label for="ordenacao">Ordenar por:</label>
+                <select id="ordenacao">
+                    <option value="recentes">Mais recentes</option>
+                    <option value="antigos">Mais antigos</option>
+                    <option value="nome-az">Nome (A–Z)</option>
+                    <option value="nome-za">Nome (Z–A)</option>
+                    <option value="idade-asc">Idade (menor)</option>
+                    <option value="idade-desc">Idade (maior)</option>
+                </select>
+
+                <button type="button" id="btn-limpar" class="btn btn-secundario">Limpar</button>
             </div>
 
-            
-            <div class="grid-animais">
-                <article class="card-pet">
-                    <img src="../assets/img/thor.jpg" alt="Foto do cão Thor" width="200">
-                    <h3>Thor</h3>
-                    <p>Cão • Macho • 2 anos • Porte Médio</p>
-                    <a href="detalhes-animal.html#thor">Ver Ficha Detalhada</a>
-                </article>
-
-                <article class="card-pet">
-                    <img src="../assets/img/mia.jpg" alt="Foto da gata Mia" width="200">
-                    <h3>Mia</h3>
-                    <p>Gata • Fêmea • 1 ano • Porte Pequeno</p>
-                    <a href="detalhes-animal.html#mia">Ver Ficha Detalhada</a>
-                </article>
-            </div>
+            <p id="contagem" class="contagem" aria-live="polite"></p>
+  
+            <div class="grid-animais"></div>
         </section>
     </main>
+
+    
+    <dialog id="dialogo-form" aria-labelledby="titulo-form">
+        <form id="form-animal" novalidate>
+            <h3 id="titulo-form">Novo animal</h3>
+
+            <input type="hidden" id="animal-id">
+            <input type="hidden" id="animal-foto">
+
+            <div class="campos-form">
+                <div class="campo campo-largo">
+                    <label for="nome">Nome *</label>
+                    <input type="text" id="nome" name="nome" maxlength="40" autocomplete="off">
+                    <span class="erro" data-erro="nome" role="alert"></span>
+                </div>
+
+                <div class="campo">
+                    <label for="especie">Espécie *</label>
+                    <select id="especie" name="especie">
+                        <option value="">Selecione</option>
+                        <option value="Cão">Cão</option>
+                        <option value="Gato">Gato</option>
+                    </select>
+                    <span class="erro" data-erro="especie" role="alert"></span>
+                </div>
+
+                <div class="campo">
+                    <label for="raca">Raça</label>
+                    <input type="text" id="raca" name="raca" list="lista-racas" autocomplete="off"
+                           placeholder="Digite para ver sugestões">
+                    <datalist id="lista-racas"></datalist>
+                </div>
+
+                <div class="campo campo-largo">
+                    <div class="bloco-api">
+                        <button type="button" id="btn-buscar-foto" class="btn btn-secundario">Buscar foto da raça</button>
+                        <img id="previa-foto" class="previa-foto" alt="Pré-visualização da foto" hidden>
+                    </div>
+                    <span id="status-api" class="status-api" aria-live="polite"></span>
+                </div>
+
+                <div class="campo">
+                    <label for="porte">Porte *</label>
+                    <select id="porte" name="porte">
+                        <option value="">Selecione</option>
+                        <option value="Pequeno">Pequeno</option>
+                        <option value="Médio">Médio</option>
+                        <option value="Grande">Grande</option>
+                    </select>
+                    <span class="erro" data-erro="porte" role="alert"></span>
+                </div>
+
+                <div class="campo">
+                    <label for="idade">Idade (anos) *</label>
+                    <input type="number" id="idade" name="idade" min="0" max="30" step="1">
+                    <span class="erro" data-erro="idade" role="alert"></span>
+                </div>
+
+                <div class="campo">
+                    <label for="sexo">Sexo *</label>
+                    <select id="sexo" name="sexo">
+                        <option value="">Selecione</option>
+                        <option value="Macho">Macho</option>
+                        <option value="Fêmea">Fêmea</option>
+                    </select>
+                    <span class="erro" data-erro="sexo" role="alert"></span>
+                </div>
+
+                <div class="campo">
+                    <label for="status">Situação *</label>
+                    <select id="status" name="status">
+                        <option value="">Selecione</option>
+                        <option value="Disponível">Disponível</option>
+                        <option value="Em processo">Em processo</option>
+                        <option value="Adotado">Adotado</option>
+                    </select>
+                    <span class="erro" data-erro="status" role="alert"></span>
+                </div>
+
+                <div class="campo campo-largo">
+                    <label for="descricao">Descrição *</label>
+                    <textarea id="descricao" name="descricao" rows="4"></textarea>
+                    <span class="erro" data-erro="descricao" role="alert"></span>
+                </div>
+            </div>
+
+            <div class="acoes-form">
+                <button type="submit" class="btn btn-primario">Salvar</button>
+                <button type="button" id="btn-cancelar" class="btn btn-secundario">Cancelar</button>
+            </div>
+        </form>
+    </dialog>
 
     <footer>
         <p>&copy; 2026 PetCasa - Todos os direitos reservados.</p>
     </footer>
 
-    
+
 </body>
 </html>

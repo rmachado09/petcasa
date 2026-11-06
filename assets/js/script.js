@@ -110,3 +110,32 @@ document.addEventListener(
   },
   true
 );
+
+function configurarLembrete() {
+  const aside = document.querySelector("aside");
+  if (!aside) return;
+ 
+  const chave = "petcasa:lembrete-fechado";
+  try {
+    if (sessionStorage.getItem(chave) === "1") {
+      aside.hidden = true;
+      return;
+    }
+  } catch (erro) {
+  }
+ 
+  const botao = criarElemento("button", "×", "btn-fechar");
+  botao.type = "button";
+  botao.setAttribute("aria-label", "Fechar lembrete");
+ 
+  botao.addEventListener("click", () => {
+    aside.hidden = true;
+    try {
+      sessionStorage.setItem(chave, "1");
+    } catch (erro) {
+    }
+  });
+ 
+  aside.prepend(botao);
+}
+ 

@@ -98,3 +98,15 @@ function renderizarDestaques() {
  
   destaques.forEach((animal) => secao.append(criarCard(animal)));
 }
+
+document.addEventListener(
+  "error",
+  (evento) => {
+    const img = evento.target;
+    if (img instanceof HTMLImageElement && !img.dataset.fallback) {
+      img.dataset.fallback = "1";
+      img.src = PLACEHOLDER;
+    }
+  },
+  true
+);

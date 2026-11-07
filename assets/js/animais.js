@@ -1,6 +1,6 @@
 const CHAVE_ANIMAIS = "petcasa:animais"; 
 const PAGINA_DETALHES = "detalhes-animal.html"; 
- 
+
 const PLACEHOLDER =
   "data:image/svg+xml;utf8," +
   encodeURIComponent(
@@ -9,7 +9,7 @@ const PLACEHOLDER =
        <text x="50%" y="50%" font-size="64" text-anchor="middle" dominant-baseline="middle">🐾</text>
      </svg>`
   );
- 
+
 
 const ANIMAIS_INICIAIS = [
   {
@@ -39,16 +39,22 @@ const ANIMAIS_INICIAIS = [
     dataCadastro: "2026-10-02T10:00:00.000Z",
   },
 ];
- 
 
-const CAMPOS = ["nome", "especie", "raca", "porte", "idade", "sexo", "status", "descricao"];
 
 const gridEl = document.querySelector(".grid-animais");
+
+
+const filtroEspecieEl = document.getElementById("filtro-especie");
+const filtroPorteEl = document.getElementById("filtro-porte");
 
 document.addEventListener("DOMContentLoaded", () => {
   renderizarAnimais();
 
-   atualizarAnoRodape(); 
+  
+  filtroEspecieEl.addEventListener("change", renderizarAnimais);
+  filtroPorteEl.addEventListener("change", renderizarAnimais);
+
+  atualizarAnoRodape();
 });
 
 
@@ -61,7 +67,7 @@ function salvarAnimais(lista) {
     return false;
   }
 }
- 
+
 
 function lerAnimais() {
   try {
@@ -73,10 +79,18 @@ function lerAnimais() {
   } catch (erro) {
     console.error("Não foi possível ler os animais salvos:", erro);
   }
- 
+
   const copia = ANIMAIS_INICIAIS.map((animal) => ({ ...animal }));
   salvarAnimais(copia);
   return copia;
+}
+
+
+function normalizar(texto) {
+  return String(texto ?? "")
+    .normalize("NFD")
+    .replace(/[̀-ͯ]/g, "")
+    .toLowerCase();
 }
 
 function formatarIdade(anos) {
@@ -84,20 +98,20 @@ function formatarIdade(anos) {
   if (anos === 1) return "1 ano";
   return `${anos} anos`;
 }
- 
+
 
 function rotuloEspecie(animal) {
   if (animal.especie === "Gato" && animal.sexo === "Fêmea") return "Gata";
   return animal.especie;
 }
- 
+
 
 function caminhoFoto(foto) {
   if (!foto) return PLACEHOLDER;
   if (/^(https?:|data:)/.test(foto)) return foto;
   return `../${foto}`;
 }
- 
+
 
 function criarElemento(tag, texto, classe) {
   const el = document.createElement(tag);
@@ -106,14 +120,15 @@ function criarElemento(tag, texto, classe) {
   return el;
 }
 
+
 function criarCard(animal) {
   const card = criarElemento("article", undefined, "card-pet");
- 
+
   const img = document.createElement("img");
   img.src = caminhoFoto(animal.foto);
   img.alt = `Foto de ${animal.nome}`;
   img.loading = "lazy";
- 
+
   const resumo = [
     rotuloEspecie(animal),
     animal.sexo,
@@ -122,17 +137,44 @@ function criarCard(animal) {
   ]
     .filter(Boolean)
     .join(" • ");
- 
+
   const link = criarElemento("a", "Ver Ficha Detalhada");
   link.href = `${PAGINA_DETALHES}#${encodeURIComponent(animal.id)}`;
+
+  card.append(img, criarElemento("h3", animal.nome), criarElemento("p", resumo), link);
+  return card;
 }
+
+function filtrarAnimais(lista) {
+  const especie = filtroEspecieEl.value; // "todos", "cao" ou "gato"
+  const porte = filtroPorteEl.value; // "todos", "pequeno", "medio" ou "grande"
+
+  return lista.filter((animal) => {
+    const bateEspecie = especie === "todos" || normalizar(animal.especie) === especie;
+    const batePorte = porte === "todos" || normalizar(animal.porte) === porte;
+    return bateEspecie && batePorte;
+  });
+}
+
 
 function renderizarAnimais() {
   const todos = lerAnimais();
-  const visiveis = ordenarAnimais(pesquisarAnimais(filtrarAnimais(todos)));
+  const visiveis = filtrarAnimais(todos);
+
+  if (visiveis.length === 0) {
+    const aviso = criarElemento(
+      "p",
+      todos.length === 0
+        ? "Nenhum animal cadastrado no momento."
+        : "Nenhum animal encontrado com esses filtros."
+    );
+    aviso.style.gridColumn = "1 / -1"; // ocupa a linha inteira da grade
+    gridEl.replaceChildren(aviso);
+    return;
+  }
+
+  gridEl.replaceChildren(...visiveis.map(criarCard));
 }
-
-
 
 document.addEventListener(
   "error",
@@ -145,11 +187,10 @@ document.addEventListener(
   },
   true
 );
- 
+
 function atualizarAnoRodape() {
   const texto = document.querySelector("footer p");
   if (texto) {
     texto.textContent = texto.textContent.replace(/\d{4}/, new Date().getFullYear());
   }
 }
- 

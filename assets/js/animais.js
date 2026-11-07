@@ -61,25 +61,34 @@ const formEl = document.getElementById("form-animal");
 const tituloFormEl = document.getElementById("titulo-form");
 const idEl = document.getElementById("animal-id");
 const fotoEl = document.getElementById("animal-foto");
+const previaEl = document.getElementById("previa-foto");
+const racaEl = document.getElementById("raca");
+const datalistEl = document.getElementById("lista-racas");
+const statusApiEl = document.getElementById("status-api");
+const btnFotoEl = document.getElementById("btn-buscar-foto");
 const btnCancelarEl = document.getElementById("btn-cancelar");
+
+const racasPorEspecie = {}; 
 
 document.addEventListener("DOMContentLoaded", () => {
   renderizarAnimais();
 
- 
+  
   buscaEl.addEventListener("input", renderizarAnimais);
   filtroEspecieEl.addEventListener("change", renderizarAnimais);
   filtroPorteEl.addEventListener("change", renderizarAnimais);
   ordenacaoEl.addEventListener("change", renderizarAnimais);
   btnLimparEl.addEventListener("click", limparFiltros);
 
-  // Formulário
+
   btnNovoEl.addEventListener("click", () => abrirFormulario());
   btnCancelarEl.addEventListener("click", () => dialogEl.close());
   dialogEl.addEventListener("click", (evento) => {
     if (evento.target === dialogEl) dialogEl.close(); 
   });
   formEl.addEventListener("submit", salvarFormulario);
+  formEl.elements.especie.addEventListener("change", aoTrocarEspecie);
+  btnFotoEl.addEventListener("click", buscarFotoDaRaca);
 
   atualizarAnoRodape();
 });
@@ -146,6 +155,7 @@ function removerAnimal(id) {
   return salvarAnimais(restante);
 }
 
+
 function normalizar(texto) {
   return String(texto ?? "")
     .normalize("NFD")
@@ -153,12 +163,15 @@ function normalizar(texto) {
     .toLowerCase();
 }
 
+function capitalizar(texto) {
+  return texto.charAt(0).toUpperCase() + texto.slice(1);
+}
+
 function formatarIdade(anos) {
   if (anos === 0) return "Menos de 1 ano";
   if (anos === 1) return "1 ano";
   return `${anos} anos`;
 }
-
 
 
 function rotuloEspecie(animal) {
@@ -282,7 +295,7 @@ function ordenarAnimais(lista) {
     case "antigos":
       copia.sort((a, b) => new Date(a.dataCadastro) - new Date(b.dataCadastro));
       break;
-    default: 
+    default: // "recentes"
       copia.sort((a, b) => new Date(b.dataCadastro) - new Date(a.dataCadastro));
   }
   return copia;
@@ -337,6 +350,9 @@ function excluirAnimal(id) {
 function abrirFormulario(animal = null) {
   formEl.reset();
   limparErros();
+  statusApiEl.textContent = "";
+  datalistEl.replaceChildren();
+
   if (animal) {
     tituloFormEl.textContent = "Editar animal";
     idEl.value = animal.id;
@@ -344,12 +360,14 @@ function abrirFormulario(animal = null) {
       formEl.elements[campo].value = animal[campo] ?? "";
     });
     fotoEl.value = animal.foto || "";
+    carregarRacas(animal.especie);
   } else {
     tituloFormEl.textContent = "Novo animal";
     idEl.value = "";
     fotoEl.value = "";
   }
 
+  atualizarPrevia();
   dialogEl.showModal();
   formEl.elements.nome.focus();
 }
@@ -440,6 +458,147 @@ function salvarFormulario(evento) {
   renderizarAnimais();
   mostrarAviso(id ? `${animal.nome} foi atualizado!` : `${animal.nome} foi cadastrado!`);
 }
+
+
+const API = {
+  async buscarRacas(especie) {
+    if (especie === "Cão") {
+      const resposta = await fetch("https://dog.ceo/api/breeds/list/all");
+      if (!resposta.ok) throw new Error("Falha ao buscar raças de cães");
+      const dados = await resposta.json();
+
+      const racas = [];
+      for (const [raca, subracas] of Object.entries(dados.message)) {
+        if (subracas.length === 0) {
+          racas.push({ nome: capitalizar(raca), caminho: raca });
+        } else {
+          subracas.forEach((sub) => {
+            racas.push({
+              nome: `${capitalizar(raca)} ${capitalizar(sub)}`,
+              caminho: `${raca}/${sub}`,
+            });
+          });
+        }
+      }
+      return racas;
+    }
+
+    const resposta = await fetch("https://api.thecatapi.com/v1/breeds");
+    if (!resposta.ok) throw new Error("Falha ao buscar raças de gatos");
+    const dados = await resposta.json();
+    return dados.map((raca) => ({
+      nome: raca.name,
+      id: raca.id,
+      imagem: raca.reference_image_id
+        ? `https://cdn2.thecatapi.com/images/${raca.reference_image_id}.jpg`
+        : "",
+    }));
+  },
+
+  async buscarFoto(especie, raca) {
+    if (especie === "Cão") {
+      const resposta = await fetch(`https://dog.ceo/api/breed/${raca.caminho}/images/random`);
+      if (!resposta.ok) throw new Error("Falha ao buscar foto do cão");
+      const dados = await resposta.json();
+      return dados.message;
+    }
+
+    try {
+      const resposta = await fetch(`https://api.thecatapi.com/v1/images/search?breed_ids=${raca.id}`);
+      if (!resposta.ok) throw new Error("Falha ao buscar foto do gato");
+      const dados = await resposta.json();
+      if (dados[0]?.url) return dados[0].url;
+    } catch (erro) {
+      
+    }
+    if (raca.imagem) return raca.imagem;
+    throw new Error("Nenhuma foto encontrada para esta raça");
+  },
+};
+
+
+async function carregarRacas(especie) {
+  datalistEl.replaceChildren();
+  if (!especie) {
+    statusApiEl.textContent = "";
+    return;
+  }
+
+  statusApiEl.textContent = "Carregando raças da API...";
+  try {
+    if (!racasPorEspecie[especie]) {
+      racasPorEspecie[especie] = await API.buscarRacas(especie);
+    }
+    
+    if (formEl.elements.especie.value !== especie) return;
+
+    const opcoes = racasPorEspecie[especie].map((raca) => {
+      const opcao = document.createElement("option");
+      opcao.value = raca.nome;
+      return opcao;
+    });
+    datalistEl.replaceChildren(...opcoes);
+    statusApiEl.textContent =
+      `${racasPorEspecie[especie].length} raças disponíveis. ` +
+      "Escolha uma sugestão para buscar a foto.";
+  } catch (erro) {
+    console.error(erro);
+    statusApiEl.textContent =
+      "Não foi possível carregar as raças. Você pode digitar a raça manualmente.";
+  }
+}
+
+
+async function buscarFotoDaRaca() {
+  const especie = formEl.elements.especie.value;
+  const nomeRaca = racaEl.value.trim();
+
+  if (!especie) {
+    statusApiEl.textContent = "Escolha a espécie primeiro.";
+    return;
+  }
+
+  const raca = (racasPorEspecie[especie] || []).find(
+    (item) => normalizar(item.nome) === normalizar(nomeRaca)
+  );
+  if (!raca) {
+    statusApiEl.textContent = "Escolha uma raça da lista de sugestões para buscar a foto.";
+    return;
+  }
+
+  btnFotoEl.disabled = true;
+  btnFotoEl.textContent = "Buscando...";
+  try {
+    fotoEl.value = await API.buscarFoto(especie, raca);
+    atualizarPrevia();
+    statusApiEl.textContent = "Foto carregada! Clique de novo para ver outra.";
+  } catch (erro) {
+    console.error(erro);
+    statusApiEl.textContent = "Não foi possível buscar a foto agora. Tente novamente.";
+  } finally {
+    btnFotoEl.disabled = false;
+    btnFotoEl.textContent = "Buscar foto da raça";
+  }
+}
+
+
+function aoTrocarEspecie(evento) {
+  racaEl.value = "";
+  fotoEl.value = "";
+  atualizarPrevia();
+  carregarRacas(evento.target.value);
+}
+
+function atualizarPrevia() {
+  if (fotoEl.value) {
+    previaEl.src = caminhoFoto(fotoEl.value);
+    previaEl.hidden = false;
+  } else {
+    previaEl.removeAttribute("src");
+    previaEl.hidden = true;
+  }
+}
+
 
 document.addEventListener(
   "error",

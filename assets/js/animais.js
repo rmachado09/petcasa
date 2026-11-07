@@ -1,5 +1,5 @@
-const CHAVE_ANIMAIS = "petcasa:animais"; // mesma chave que o index.js lê
-const PAGINA_DETALHES = "detalhes-animal.html"; // está na mesma pasta (pages/)
+const CHAVE_ANIMAIS = "petcasa:animais"; 
+const PAGINA_DETALHES = "detalhes-animal.html"; 
 
 const PLACEHOLDER =
   "data:image/svg+xml;utf8," +
@@ -10,8 +10,7 @@ const PLACEHOLDER =
      </svg>`
   );
 
-// Animais de exemplo, salvos só na primeira visita.
-// A foto fica relativa à raiz do site (assets/img/...), pois é assim que o index.js a usa.
+
 const ANIMAIS_INICIAIS = [
   {
     id: "thor",
@@ -41,6 +40,7 @@ const ANIMAIS_INICIAIS = [
   },
 ];
 
+
 const gridEl = document.querySelector(".grid-animais");
 const contagemEl = document.getElementById("contagem");
 
@@ -48,14 +48,18 @@ const contagemEl = document.getElementById("contagem");
 const buscaEl = document.getElementById("busca");
 const filtroEspecieEl = document.getElementById("filtro-especie");
 const filtroPorteEl = document.getElementById("filtro-porte");
+const ordenacaoEl = document.getElementById("ordenacao");
+const btnLimparEl = document.getElementById("btn-limpar");
 
 document.addEventListener("DOMContentLoaded", () => {
   renderizarAnimais();
 
-  
+ 
   buscaEl.addEventListener("input", renderizarAnimais);
   filtroEspecieEl.addEventListener("change", renderizarAnimais);
   filtroPorteEl.addEventListener("change", renderizarAnimais);
+  ordenacaoEl.addEventListener("change", renderizarAnimais);
+  btnLimparEl.addEventListener("click", limparFiltros);
 
   atualizarAnoRodape();
 });
@@ -168,10 +172,35 @@ function pesquisarAnimais(lista) {
   );
 }
 
+function ordenarAnimais(lista) {
+  const copia = [...lista]; 
+
+  switch (ordenacaoEl.value) {
+    case "nome-az":
+      copia.sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR"));
+      break;
+    case "nome-za":
+      copia.sort((a, b) => b.nome.localeCompare(a.nome, "pt-BR"));
+      break;
+    case "idade-asc":
+      copia.sort((a, b) => a.idade - b.idade);
+      break;
+    case "idade-desc":
+      copia.sort((a, b) => b.idade - a.idade);
+      break;
+    case "antigos":
+      copia.sort((a, b) => new Date(a.dataCadastro) - new Date(b.dataCadastro));
+      break;
+    default: 
+      copia.sort((a, b) => new Date(b.dataCadastro) - new Date(a.dataCadastro));
+  }
+  return copia;
+}
+
 
 function renderizarAnimais() {
   const todos = lerAnimais();
-  const visiveis = pesquisarAnimais(filtrarAnimais(todos));
+  const visiveis = ordenarAnimais(pesquisarAnimais(filtrarAnimais(todos)));
 
   contagemEl.textContent = `Mostrando ${visiveis.length} de ${todos.length} animais`;
 
@@ -182,13 +211,22 @@ function renderizarAnimais() {
         ? "Nenhum animal cadastrado no momento."
         : "Nenhum animal encontrado com esses filtros."
     );
-    aviso.style.gridColumn = "1 / -1"; // ocupa a linha inteira da grade
+    aviso.style.gridColumn = "1 / -1"; 
     gridEl.replaceChildren(aviso);
     return;
   }
 
   gridEl.replaceChildren(...visiveis.map(criarCard));
 }
+
+function limparFiltros() {
+  buscaEl.value = "";
+  filtroEspecieEl.value = "todos";
+  filtroPorteEl.value = "todos";
+  ordenacaoEl.value = "recentes";
+  renderizarAnimais();
+}
+
 
 document.addEventListener(
   "error",

@@ -41,6 +41,9 @@ const ANIMAIS_INICIAIS = [
 ];
 
 
+const CAMPOS = ["nome", "especie", "raca", "porte", "idade", "sexo", "status", "descricao"];
+
+
 const gridEl = document.querySelector(".grid-animais");
 const contagemEl = document.getElementById("contagem");
 
@@ -50,16 +53,32 @@ const filtroEspecieEl = document.getElementById("filtro-especie");
 const filtroPorteEl = document.getElementById("filtro-porte");
 const ordenacaoEl = document.getElementById("ordenacao");
 const btnLimparEl = document.getElementById("btn-limpar");
+const btnNovoEl = document.getElementById("btn-novo");
+
+
+const dialogEl = document.getElementById("dialogo-form");
+const formEl = document.getElementById("form-animal");
+const tituloFormEl = document.getElementById("titulo-form");
+const fotoEl = document.getElementById("animal-foto");
+const btnCancelarEl = document.getElementById("btn-cancelar");
 
 document.addEventListener("DOMContentLoaded", () => {
   renderizarAnimais();
 
-  
+
   buscaEl.addEventListener("input", renderizarAnimais);
   filtroEspecieEl.addEventListener("change", renderizarAnimais);
   filtroPorteEl.addEventListener("change", renderizarAnimais);
   ordenacaoEl.addEventListener("change", renderizarAnimais);
   btnLimparEl.addEventListener("click", limparFiltros);
+
+  
+  btnNovoEl.addEventListener("click", () => abrirFormulario());
+  btnCancelarEl.addEventListener("click", () => dialogEl.close());
+  dialogEl.addEventListener("click", (evento) => {
+    if (evento.target === dialogEl) dialogEl.close(); 
+  });
+  formEl.addEventListener("submit", salvarFormulario);
 
   atualizarAnoRodape();
 });
@@ -92,8 +111,19 @@ function lerAnimais() {
   return copia;
 }
 
+function gerarId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+}
+
 function obterAnimal(id) {
   return lerAnimais().find((animal) => animal.id === id) || null;
+}
+
+
+function criarAnimal(dados) {
+  const lista = lerAnimais();
+  lista.push({ ...dados, id: gerarId(), dataCadastro: new Date().toISOString() });
+  return salvarAnimais(lista);
 }
 
 
@@ -195,7 +225,7 @@ function criarCard(animal) {
 }
 
 function filtrarAnimais(lista) {
-  const especie = filtroEspecieEl.value;
+  const especie = filtroEspecieEl.value; 
   const porte = filtroPorteEl.value; 
 
   return lista.filter((animal) => {
@@ -234,7 +264,7 @@ function ordenarAnimais(lista) {
     case "antigos":
       copia.sort((a, b) => new Date(a.dataCadastro) - new Date(b.dataCadastro));
       break;
-    default: // "recentes"
+    default: 
       copia.sort((a, b) => new Date(b.dataCadastro) - new Date(a.dataCadastro));
   }
   return copia;
@@ -287,6 +317,103 @@ function excluirAnimal(id) {
   }
 }
 
+
+function abrirFormulario() {
+  formEl.reset();
+  limparErros();
+
+  tituloFormEl.textContent = "Novo animal";
+  fotoEl.value = "";
+
+  dialogEl.showModal();
+  formEl.elements.nome.focus();
+}
+
+function lerFormulario() {
+  const dados = {};
+  CAMPOS.forEach((campo) => {
+    dados[campo] = formEl.elements[campo].value.trim();
+  });
+  return dados;
+}
+
+
+function validar(dados) {
+  const erros = {};
+
+  if (dados.nome.length < 2) {
+    erros.nome = "Informe o nome (mínimo de 2 caracteres).";
+  } else if (dados.nome.length > 40) {
+    erros.nome = "O nome deve ter no máximo 40 caracteres.";
+  }
+
+  if (dados.especie === "") erros.especie = "Selecione a espécie.";
+  if (dados.porte === "") erros.porte = "Selecione o porte.";
+
+  const idade = Number(dados.idade);
+  if (dados.idade === "" || !Number.isInteger(idade) || idade < 0 || idade > 30) {
+    erros.idade = "Informe uma idade inteira entre 0 e 30 anos.";
+  }
+
+  if (dados.sexo === "") erros.sexo = "Selecione o sexo.";
+  if (dados.status === "") erros.status = "Selecione a situação.";
+
+  if (dados.descricao.length < 10) {
+    erros.descricao = "Descreva o animal com pelo menos 10 caracteres.";
+  }
+
+  return erros;
+}
+
+function limparErros() {
+  formEl.querySelectorAll("[data-erro]").forEach((span) => {
+    span.textContent = "";
+  });
+  CAMPOS.forEach((campo) => {
+    formEl.elements[campo].removeAttribute("aria-invalid");
+  });
+}
+
+function mostrarErros(erros) {
+  limparErros();
+  Object.entries(erros).forEach(([campo, mensagem]) => {
+    formEl.querySelector(`[data-erro="${campo}"]`).textContent = mensagem;
+    formEl.elements[campo].setAttribute("aria-invalid", "true");
+  });
+}
+
+function salvarFormulario(evento) {
+  evento.preventDefault(); 
+
+  const dados = lerFormulario();
+  const erros = validar(dados);
+  mostrarErros(erros);
+
+  const camposComErro = Object.keys(erros);
+  if (camposComErro.length > 0) {
+    mostrarAviso("Corrija os campos destacados.");
+    formEl.elements[camposComErro[0]].focus();
+    return;
+  }
+
+  const animal = {
+    ...dados,
+    idade: Number(dados.idade),
+    raca: dados.raca || "Sem raça definida",
+    foto: fotoEl.value,
+  };
+
+  const ok = criarAnimal(animal);
+
+  if (!ok) {
+    mostrarAviso("Não foi possível salvar. Verifique o armazenamento do navegador.");
+    return;
+  }
+
+  dialogEl.close();
+  renderizarAnimais();
+  mostrarAviso(`${animal.nome} foi cadastrado!`);
+}
 
 document.addEventListener(
   "error",

@@ -54,7 +54,7 @@ const btnLimparEl = document.getElementById("btn-limpar");
 document.addEventListener("DOMContentLoaded", () => {
   renderizarAnimais();
 
- 
+  
   buscaEl.addEventListener("input", renderizarAnimais);
   filtroEspecieEl.addEventListener("change", renderizarAnimais);
   filtroPorteEl.addEventListener("change", renderizarAnimais);
@@ -92,6 +92,17 @@ function lerAnimais() {
   return copia;
 }
 
+function obterAnimal(id) {
+  return lerAnimais().find((animal) => animal.id === id) || null;
+}
+
+
+function removerAnimal(id) {
+  const lista = lerAnimais();
+  const restante = lista.filter((animal) => animal.id !== id);
+  if (restante.length === lista.length) return false;
+  return salvarAnimais(restante);
+}
 
 function normalizar(texto) {
   return String(texto ?? "")
@@ -127,6 +138,27 @@ function criarElemento(tag, texto, classe) {
 }
 
 
+
+let temporizadorAviso;
+
+function mostrarAviso(mensagem) {
+  let aviso = document.querySelector(".aviso");
+  if (!aviso) {
+    aviso = criarElemento("div", undefined, "aviso");
+    aviso.setAttribute("role", "status");
+    document.body.append(aviso);
+  }
+  aviso.textContent = mensagem;
+  aviso.hidden = false;
+
+  clearTimeout(temporizadorAviso);
+  temporizadorAviso = setTimeout(() => {
+    aviso.hidden = true;
+  }, 3000);
+}
+
+
+
 function criarCard(animal) {
   const card = criarElemento("article", undefined, "card-pet");
 
@@ -147,12 +179,23 @@ function criarCard(animal) {
   const link = criarElemento("a", "Ver Ficha Detalhada");
   link.href = `${PAGINA_DETALHES}#${encodeURIComponent(animal.id)}`;
 
-  card.append(img, criarElemento("h3", animal.nome), criarElemento("p", resumo), link);
+  const btnExcluir = criarElemento("button", "Excluir", "btn btn-perigo");
+  btnExcluir.type = "button";
+  btnExcluir.setAttribute("aria-label", `Excluir ${animal.nome}`);
+  btnExcluir.addEventListener("click", () => excluirAnimal(animal.id));
+
+  const acoes = criarElemento("div", undefined, "acoes");
+  acoes.append(btnExcluir);
+
+  const rodape = criarElemento("div", undefined, "card-rodape");
+  rodape.append(link, acoes);
+
+  card.append(img, criarElemento("h3", animal.nome), criarElemento("p", resumo), rodape);
   return card;
 }
 
 function filtrarAnimais(lista) {
-  const especie = filtroEspecieEl.value; 
+  const especie = filtroEspecieEl.value;
   const porte = filtroPorteEl.value; 
 
   return lista.filter((animal) => {
@@ -191,7 +234,7 @@ function ordenarAnimais(lista) {
     case "antigos":
       copia.sort((a, b) => new Date(a.dataCadastro) - new Date(b.dataCadastro));
       break;
-    default: 
+    default: // "recentes"
       copia.sort((a, b) => new Date(b.dataCadastro) - new Date(a.dataCadastro));
   }
   return copia;
@@ -225,6 +268,23 @@ function limparFiltros() {
   filtroPorteEl.value = "todos";
   ordenacaoEl.value = "recentes";
   renderizarAnimais();
+}
+
+
+function excluirAnimal(id) {
+  const animal = obterAnimal(id);
+  if (!animal) return;
+
+  if (!confirm(`Deseja realmente excluir ${animal.nome}? Essa ação não pode ser desfeita.`)) {
+    return;
+  }
+
+  if (removerAnimal(id)) {
+    renderizarAnimais();
+    mostrarAviso(`${animal.nome} foi excluído.`);
+  } else {
+    mostrarAviso("Não foi possível excluir o animal.");
+  }
 }
 
 

@@ -59,20 +59,21 @@ const btnNovoEl = document.getElementById("btn-novo");
 const dialogEl = document.getElementById("dialogo-form");
 const formEl = document.getElementById("form-animal");
 const tituloFormEl = document.getElementById("titulo-form");
+const idEl = document.getElementById("animal-id");
 const fotoEl = document.getElementById("animal-foto");
 const btnCancelarEl = document.getElementById("btn-cancelar");
 
 document.addEventListener("DOMContentLoaded", () => {
   renderizarAnimais();
 
-
+ 
   buscaEl.addEventListener("input", renderizarAnimais);
   filtroEspecieEl.addEventListener("change", renderizarAnimais);
   filtroPorteEl.addEventListener("change", renderizarAnimais);
   ordenacaoEl.addEventListener("change", renderizarAnimais);
   btnLimparEl.addEventListener("click", limparFiltros);
 
-  
+  // Formulário
   btnNovoEl.addEventListener("click", () => abrirFormulario());
   btnCancelarEl.addEventListener("click", () => dialogEl.close());
   dialogEl.addEventListener("click", (evento) => {
@@ -127,6 +128,17 @@ function criarAnimal(dados) {
 }
 
 
+function atualizarAnimal(id, dados) {
+  const lista = lerAnimais();
+  const indice = lista.findIndex((animal) => animal.id === id);
+  if (indice === -1) return false;
+
+  const antigo = lista[indice];
+  lista[indice] = { ...antigo, ...dados, id: antigo.id, dataCadastro: antigo.dataCadastro };
+  return salvarAnimais(lista);
+}
+
+
 function removerAnimal(id) {
   const lista = lerAnimais();
   const restante = lista.filter((animal) => animal.id !== id);
@@ -146,6 +158,7 @@ function formatarIdade(anos) {
   if (anos === 1) return "1 ano";
   return `${anos} anos`;
 }
+
 
 
 function rotuloEspecie(animal) {
@@ -209,13 +222,18 @@ function criarCard(animal) {
   const link = criarElemento("a", "Ver Ficha Detalhada");
   link.href = `${PAGINA_DETALHES}#${encodeURIComponent(animal.id)}`;
 
+  const btnEditar = criarElemento("button", "Editar", "btn btn-secundario");
+  btnEditar.type = "button";
+  btnEditar.setAttribute("aria-label", `Editar ${animal.nome}`);
+  btnEditar.addEventListener("click", () => abrirFormulario(animal));
+
   const btnExcluir = criarElemento("button", "Excluir", "btn btn-perigo");
   btnExcluir.type = "button";
   btnExcluir.setAttribute("aria-label", `Excluir ${animal.nome}`);
   btnExcluir.addEventListener("click", () => excluirAnimal(animal.id));
 
   const acoes = criarElemento("div", undefined, "acoes");
-  acoes.append(btnExcluir);
+  acoes.append(btnEditar, btnExcluir);
 
   const rodape = criarElemento("div", undefined, "card-rodape");
   rodape.append(link, acoes);
@@ -270,7 +288,6 @@ function ordenarAnimais(lista) {
   return copia;
 }
 
-
 function renderizarAnimais() {
   const todos = lerAnimais();
   const visiveis = ordenarAnimais(pesquisarAnimais(filtrarAnimais(todos)));
@@ -317,13 +334,21 @@ function excluirAnimal(id) {
   }
 }
 
-
-function abrirFormulario() {
+function abrirFormulario(animal = null) {
   formEl.reset();
   limparErros();
-
-  tituloFormEl.textContent = "Novo animal";
-  fotoEl.value = "";
+  if (animal) {
+    tituloFormEl.textContent = "Editar animal";
+    idEl.value = animal.id;
+    CAMPOS.forEach((campo) => {
+      formEl.elements[campo].value = animal[campo] ?? "";
+    });
+    fotoEl.value = animal.foto || "";
+  } else {
+    tituloFormEl.textContent = "Novo animal";
+    idEl.value = "";
+    fotoEl.value = "";
+  }
 
   dialogEl.showModal();
   formEl.elements.nome.focus();
@@ -403,7 +428,8 @@ function salvarFormulario(evento) {
     foto: fotoEl.value,
   };
 
-  const ok = criarAnimal(animal);
+  const id = idEl.value;
+  const ok = id ? atualizarAnimal(id, animal) : criarAnimal(animal);
 
   if (!ok) {
     mostrarAviso("Não foi possível salvar. Verifique o armazenamento do navegador.");
@@ -412,7 +438,7 @@ function salvarFormulario(evento) {
 
   dialogEl.close();
   renderizarAnimais();
-  mostrarAviso(`${animal.nome} foi cadastrado!`);
+  mostrarAviso(id ? `${animal.nome} foi atualizado!` : `${animal.nome} foi cadastrado!`);
 }
 
 document.addEventListener(
@@ -433,3 +459,4 @@ function atualizarAnoRodape() {
     texto.textContent = texto.textContent.replace(/\d{4}/, new Date().getFullYear());
   }
 }
+

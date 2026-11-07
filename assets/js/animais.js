@@ -1,5 +1,5 @@
-const CHAVE_ANIMAIS = "petcasa:animais"; 
-const PAGINA_DETALHES = "detalhes-animal.html"; 
+const CHAVE_ANIMAIS = "petcasa:animais"; // mesma chave que o index.js lê
+const PAGINA_DETALHES = "detalhes-animal.html"; // está na mesma pasta (pages/)
 
 const PLACEHOLDER =
   "data:image/svg+xml;utf8," +
@@ -10,7 +10,8 @@ const PLACEHOLDER =
      </svg>`
   );
 
-
+// Animais de exemplo, salvos só na primeira visita.
+// A foto fica relativa à raiz do site (assets/img/...), pois é assim que o index.js a usa.
 const ANIMAIS_INICIAIS = [
   {
     id: "thor",
@@ -40,10 +41,11 @@ const ANIMAIS_INICIAIS = [
   },
 ];
 
-
 const gridEl = document.querySelector(".grid-animais");
+const contagemEl = document.getElementById("contagem");
 
 
+const buscaEl = document.getElementById("busca");
 const filtroEspecieEl = document.getElementById("filtro-especie");
 const filtroPorteEl = document.getElementById("filtro-porte");
 
@@ -51,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderizarAnimais();
 
   
+  buscaEl.addEventListener("input", renderizarAnimais);
   filtroEspecieEl.addEventListener("change", renderizarAnimais);
   filtroPorteEl.addEventListener("change", renderizarAnimais);
 
@@ -112,7 +115,6 @@ function caminhoFoto(foto) {
   return `../${foto}`;
 }
 
-
 function criarElemento(tag, texto, classe) {
   const el = document.createElement(tag);
   if (texto !== undefined) el.textContent = texto;
@@ -146,8 +148,8 @@ function criarCard(animal) {
 }
 
 function filtrarAnimais(lista) {
-  const especie = filtroEspecieEl.value; // "todos", "cao" ou "gato"
-  const porte = filtroPorteEl.value; // "todos", "pequeno", "medio" ou "grande"
+  const especie = filtroEspecieEl.value; 
+  const porte = filtroPorteEl.value; 
 
   return lista.filter((animal) => {
     const bateEspecie = especie === "todos" || normalizar(animal.especie) === especie;
@@ -157,9 +159,21 @@ function filtrarAnimais(lista) {
 }
 
 
+function pesquisarAnimais(lista) {
+  const termo = normalizar(buscaEl.value.trim());
+  if (termo === "") return lista;
+
+  return lista.filter(
+    (animal) => normalizar(animal.nome).includes(termo) || normalizar(animal.raca).includes(termo)
+  );
+}
+
+
 function renderizarAnimais() {
   const todos = lerAnimais();
-  const visiveis = filtrarAnimais(todos);
+  const visiveis = pesquisarAnimais(filtrarAnimais(todos));
+
+  contagemEl.textContent = `Mostrando ${visiveis.length} de ${todos.length} animais`;
 
   if (visiveis.length === 0) {
     const aviso = criarElemento(

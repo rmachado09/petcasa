@@ -38,15 +38,34 @@ const ANIMAIS_INICIAIS = [
 ];
 
 
+const CAMPOS_EXTRAS = [
+  ["vacinacao", "Vacinação"],
+  ["castrado", "Castrado"],
+  ["testes", "Testes"],
+];
+
 const conteudoEl = document.getElementById("conteudo-animal");
+const TITULO_PADRAO = document.title; 
 
 document.addEventListener("DOMContentLoaded", () => {
-  const animal = obterAnimal(obterIdDaUrl());
-  if (animal) {
-    conteudoEl.append(criarFicha(animal));
-  }
+  mostrarAnimal();
+  atualizarAnoRodape();
 });
 
+window.addEventListener("hashchange", mostrarAnimal);
+
+function mostrarAnimal() {
+  const id = obterIdDaUrl();
+  const animal = obterAnimal(id);
+
+  if (animal) {
+    document.title = `PetCasa - ${animal.nome}`;
+    conteudoEl.replaceChildren(criarLinkVoltar(), criarFicha(animal));
+  } else {
+    document.title = TITULO_PADRAO;
+    conteudoEl.replaceChildren(criarNaoEncontrado(id));
+  }
+}
 
 function obterIdDaUrl() {
   const hash = window.location.hash.slice(1);
@@ -104,6 +123,13 @@ function criarLinhaInfo(rotulo, valor) {
 }
 
 
+function formatarValor(valor) {
+  if (valor === true) return "Sim";
+  if (valor === false) return "Não";
+  return String(valor);
+}
+
+
 function criarFicha(animal) {
   const ficha = criarElemento("article", undefined, "perfil-detalhado");
   ficha.id = animal.id;
@@ -122,9 +148,19 @@ function criarFicha(animal) {
     criarLinhaInfo("Porte", animal.porte),
     criarLinhaInfo("Situação", animal.status)
   );
+ 
+  for (const [chave, rotulo] of CAMPOS_EXTRAS) {
+    const valor = animal[chave];
+    if (valor !== undefined && valor !== null && valor !== "") {
+      info.append(criarLinhaInfo(rotulo, formatarValor(valor)));
+    }
+  }
 
   const historia = criarElemento("section", undefined, "historia");
-  historia.append(criarElemento("h3", `Sobre ${animal.nome}`), criarElemento("p", animal.descricao));
+  historia.append(
+    criarElemento("h3", animal.historia ? "História do Resgate" : `Sobre ${animal.nome}`),
+    criarElemento("p", animal.historia || animal.descricao)
+  );
 
   const artigo = animal.sexo === "Fêmea" ? "a" : "o";
   const botao = criarElemento("a", `Quero Adotar ${artigo} ${animal.nome}`, "btn");
@@ -132,4 +168,44 @@ function criarFicha(animal) {
 
   ficha.append(criarElemento("h2", animal.nome), img, info, historia, botao);
   return ficha;
+}
+
+function criarLinkVoltar() {
+  const link = criarElemento("a", "← Voltar para os animais", "voltar");
+  link.href = "animais.html";
+  return link;
+}
+
+
+function criarNaoEncontrado(id) {
+  const mensagem = id
+    ? "Não encontramos esse animal. Ele pode ter sido removido."
+    : "Nenhum animal foi selecionado.";
+
+  const link = criarElemento("a", "Ver animais disponíveis", "btn");
+  link.href = "animais.html";
+
+  const secao = criarElemento("section", undefined, "nao-encontrado");
+  secao.append(criarElemento("h2", "Animal não encontrado"), criarElemento("p", mensagem), link);
+  return secao;
+}
+
+document.addEventListener(
+  "error",
+  (evento) => {
+    const img = evento.target;
+    if (img instanceof HTMLImageElement && !img.dataset.fallback) {
+      img.dataset.fallback = "1";
+      img.src = PLACEHOLDER;
+    }
+  },
+  true
+);
+
+
+function atualizarAnoRodape() {
+  const texto = document.querySelector("footer p");
+  if (texto) {
+    texto.textContent = texto.textContent.replace(/\d{4}/, new Date().getFullYear());
+  }
 }

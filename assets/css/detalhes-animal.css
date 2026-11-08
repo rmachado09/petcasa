@@ -99,7 +99,35 @@ hr {
   border-top: 2px dashed #8cc49a;
 }
 
+.voltar {
+  display: inline-block;
+  margin-bottom: 16px;
+  color: #256445;
+  font-weight: 600;
+  text-decoration: none;
+}
 
+.voltar:hover {
+  text-decoration: underline;
+}
+
+.nao-encontrado {
+  padding: 40px 20px;
+  text-align: center;
+  background-color: #ffffff;
+  border: 2px dashed #8cc49a;
+  border-radius: 14px;
+}
+
+.nao-encontrado h2 {
+  margin: 0 0 8px;
+  color: #17402e;
+}
+
+.nao-encontrado p {
+  margin: 0 0 20px;
+  color: #4a5b52;
+}
 
 
 @media (max-width: 768px) {
@@ -123,7 +151,7 @@ hr {
     margin: 32px 0;
   }
 }
- 
+
 
 @media (max-width: 640px) {
   .perfil-detalhado {

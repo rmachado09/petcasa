@@ -619,3 +619,5 @@ function atualizarAnoRodape() {
   }
 }
 
+atualizarAnoRodape();
+

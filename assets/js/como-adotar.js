@@ -176,3 +176,12 @@ formDocumentos.addEventListener("submit", function (evento) {
     "✅ Documentos recebidos! Nossa equipe vai conferir sua identidade e maioridade e entrará em contato.";
   botaoEnviar.disabled = true;
 });
+
+function atualizarAnoRodape() {
+  const texto = document.querySelector("footer p");
+  if (texto) {
+    texto.textContent = texto.textContent.replace(/\d{4}/, new Date().getFullYear());
+  }
+}
+
+atualizarAnoRodape();

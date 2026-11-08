@@ -525,3 +525,5 @@ function atualizarAnoRodape() {
     texto.textContent = texto.textContent.replace(/\d{4}/, new Date().getFullYear());
   }
 }
+
+atualizarAnoRodape();

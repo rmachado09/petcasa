@@ -122,6 +122,41 @@
   background-color: #256445;
 }
 
+.erro {
+  display: block;
+  min-height: 1.2em;
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: #a12a1c;
+}
+
+.campo [aria-invalid="true"] {
+  border-color: #c0392b;
+}
+
+.feedback {
+  max-width: 600px;
+  margin: 0 0 20px;
+  padding: 14px 18px;
+  font-weight: 600;
+  border-radius: 10px;
+}
+
+.feedback[hidden] {
+  display: none;
+}
+
+.feedback-sucesso {
+  background-color: #e3f1e5;
+  color: #17402e;
+  border-left: 6px solid #3f8a5c;
+}
+
+.feedback-erro {
+  background-color: #fbe9e7;
+  color: #a12a1c;
+  border-left: 6px solid #c0392b;
+}
 
 
 

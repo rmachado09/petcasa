@@ -93,6 +93,116 @@
 }
 
 
+.passos-adocao p {
+  cursor: pointer;
+}
+
+.passos-adocao p.concluido::before {
+  content: "✓";
+  background-color: #17402e;
+}
+
+.passos-adocao p.concluido strong {
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+
+.progresso-passos {
+  margin-bottom: 24px;
+}
+
+.progresso-texto {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #256445;
+}
+
+.progresso-barra {
+  height: 12px;
+  background-color: #e3f1e5;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.progresso-preenchimento {
+  width: 0;
+  height: 100%;
+  background-color: #3f8a5c;
+  transition: width 0.3s;
+}
+
+.form-documentos {
+  margin-top: 24px;
+  padding: 20px;
+  background-color: #f4faf4;
+  border: 1px solid #e3f1e5;
+  border-radius: 12px;
+}
+
+.form-documentos h3 {
+  margin: 0 0 16px;
+  color: #17402e;
+}
+
+.campo-documento {
+  margin-bottom: 18px;
+}
+
+.campo-documento label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #256445;
+}
+
+.campo-documento input[type="file"] {
+  width: 100%;
+  max-width: 100%;
+}
+
+.campo-documento .dica {
+  display: block;
+  margin-top: 4px;
+  color: #555555;
+}
+
+.erro-documento {
+  display: block;
+  margin-top: 4px;
+  color: #b3261e;
+  font-weight: 600;
+}
+
+.previa-documento img {
+  margin-top: 10px;
+  max-width: 180px;
+  max-height: 140px;
+  border: 2px solid #e3f1e5;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.form-documentos button {
+  padding: 12px 24px;
+  background-color: #3f8a5c;
+  color: #ffffff;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.form-documentos button:disabled {
+  background-color: #a9c9b5;
+  cursor: not-allowed;
+}
+
+.retorno-documentos {
+  margin: 12px 0 0;
+  color: #17402e;
+  font-weight: 600;
+}
 
 
 @media (max-width: 768px) {
@@ -104,6 +214,15 @@
  
   .requisitos td:first-child {
     width: 35%;
+  }
+
+  .form-documentos {
+    padding: 16px;
+  }
+
+  .previa-documento img {
+    max-width: 150px;
+    max-height: 120px;
   }
 }
  
@@ -146,5 +265,32 @@
  
   .requisitos td:first-child {
     width: 100%;
+  }
+
+  .form-documentos {
+    margin-top: 20px;
+    padding: 16px 12px;
+  }
+
+  .form-documentos h3 {
+    font-size: 1.1rem;
+  }
+
+  .campo-documento label {
+    font-size: 0.95rem;
+  }
+
+  .previa-documento img {
+    width: 100%;
+    max-width: 100%;
+    max-height: 200px;
+  }
+
+  .form-documentos button {
+    width: 100%;
+  }
+
+  .progresso-texto {
+    font-size: 0.95rem;
   }
 }

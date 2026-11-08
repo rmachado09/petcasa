@@ -142,24 +142,30 @@
 }
  
 
-.form-voluntario form {
+.form-voluntario form,
+.form-apadrinhar form {
   max-width: 600px;
 }
- 
-.form-voluntario form div {
+
+.form-voluntario form div,
+.form-apadrinhar form div {
   margin-bottom: 18px;
 }
- 
-.form-voluntario label {
+
+.form-voluntario label,
+.form-apadrinhar label {
   display: block;
   margin-bottom: 6px;
   font-weight: 600;
   color: #17402e;
 }
- 
+
 .form-voluntario input,
 .form-voluntario select,
-.form-voluntario textarea {
+.form-voluntario textarea,
+.form-apadrinhar input,
+.form-apadrinhar select,
+.form-apadrinhar textarea {
   width: 100%;
   padding: 10px 12px;
   font-family: inherit;
@@ -169,19 +175,24 @@
   border: 2px solid #8cc49a;
   border-radius: 8px;
 }
- 
-.form-voluntario textarea {
+
+.form-voluntario textarea,
+.form-apadrinhar textarea {
   resize: vertical;
 }
- 
+
 .form-voluntario input:focus,
 .form-voluntario select:focus,
-.form-voluntario textarea:focus {
+.form-voluntario textarea:focus,
+.form-apadrinhar input:focus,
+.form-apadrinhar select:focus,
+.form-apadrinhar textarea:focus {
   outline: 3px solid #d6ec8f;
   border-color: #3f8a5c;
 }
- 
-.form-voluntario button {
+
+.form-voluntario button,
+.form-apadrinhar button {
   padding: 12px 28px;
   font-family: inherit;
   font-size: 1rem;
@@ -192,55 +203,149 @@
   border-radius: 999px;
   cursor: pointer;
 }
- 
-.form-voluntario button:hover {
+
+.form-voluntario button:hover,
+.form-apadrinhar button:hover {
   background-color: #256445;
 }
 
 
+.form-voluntario .erro,
+.form-apadrinhar .erro {
+  display: block;
+  min-height: 1.2em;
+  margin-top: 4px;
+  font-size: 0.9rem;
+  color: #c0392b;
+}
 
+.form-voluntario [aria-invalid="true"],
+.form-apadrinhar [aria-invalid="true"] {
+  border-color: #c0392b;
+}
+
+.feedback {
+  max-width: 600px;
+  margin-bottom: 20px;
+  padding: 14px 18px;
+  font-weight: 600;
+  border-radius: 10px;
+}
+
+.feedback[hidden] {
+  display: none;
+}
+
+.feedback-sucesso {
+  color: #17402e;
+  background-color: #e3f1e5;
+  border: 2px solid #3f8a5c;
+}
+
+.feedback-erro {
+  color: #7b241c;
+  background-color: #fdecea;
+  border: 2px solid #c0392b;
+}
+
+.btn-copiar {
+  padding: 6px 14px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #3f8a5c;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.btn-copiar:hover:not(:disabled) {
+  background-color: #256445;
+}
+
+.btn-copiar:disabled {
+  cursor: default;
+  opacity: 0.8;
+}
+
+.card-ajuda a + a {
+  margin-top: 10px;
+}
+
+.animal-escolhido {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px;
+  background-color: #f4faf4;
+  border: 2px solid #e3f1e5;
+  border-radius: 12px;
+}
+
+.animal-escolhido[hidden] {
+  display: none;
+}
+
+.animal-escolhido img {
+  width: 90px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.animal-escolhido strong {
+  display: block;
+  color: #17402e;
+}
+
+.animal-escolhido span {
+  color: #4a5b52;
+}
 
 @media (max-width: 768px) {
   .hero-ajuda {
     padding: 36px 24px;
     margin-bottom: 32px;
   }
- 
+
   .hero-ajuda h2 {
     font-size: 1.8rem;
   }
- 
+
   .formas-ajuda,
   .dados-doacao {
     margin-bottom: 32px;
   }
- 
+
   .dados-doacao,
-  .form-voluntario {
+  .form-voluntario,
+  .form-apadrinhar {
     padding: 22px;
   }
 }
- 
+
 
 @media (max-width: 640px) {
   .hero-ajuda {
     padding: 28px 20px;
   }
- 
+
   .hero-ajuda h2 {
     font-size: 1.6rem;
   }
- 
+
   .formas-ajuda {
     grid-template-columns: 1fr;
   }
- 
+
   .dados-doacao,
-  .form-voluntario {
+  .form-voluntario,
+  .form-apadrinhar {
     padding: 20px 16px;
   }
- 
-  
+
+
   .dados-doacao table,
   .dados-doacao tbody,
   .dados-doacao tr,
@@ -248,30 +353,31 @@
     display: block;
     width: 100%;
   }
- 
+
   .dados-doacao thead {
     display: none;
   }
- 
+
   .dados-doacao tbody tr {
     padding: 12px 0;
     border-bottom: 1px solid #e3f1e5;
   }
- 
+
   .dados-doacao tbody tr:last-child {
     border-bottom: none;
   }
- 
+
   .dados-doacao td {
     padding: 2px 16px;
     border: none;
   }
- 
+
   .dados-doacao tbody tr:last-child td {
     border-bottom: none;
   }
- 
-  .form-voluntario button {
+
+  .form-voluntario button,
+  .form-apadrinhar button {
     width: 100%;
   }
 }

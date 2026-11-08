@@ -158,6 +158,18 @@
   border-left: 6px solid #c0392b;
 }
 
+.contador {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.85rem;
+  text-align: right;
+  color: #4a5b52;
+}
+
+.contador.perto-do-limite {
+  color: #a12a1c;
+  font-weight: 600;
+}
 
 
 @media (max-width: 768px) {
